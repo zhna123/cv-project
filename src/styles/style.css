@@ -1,0 +1,98 @@
+#cv_form {
+    width: 70%;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 60%;
+    margin: auto;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 2px solid gray;
+}
+
+.edu_group, .work_group {
+    display: block;
+    width: 80%;
+}
+
+input[type=text] {
+    margin-left: 10px;
+}
+
+button {
+    display: block;
+    float: right;
+    margin: 50px 10px;
+    border-style: none;
+    background-color: gray;
+    border-radius: 5px;
+    width: 100px;
+    height: 35px;
+    color: white;
+    font: inherit;
+}
+
+.add_form {
+    background-color: lightblue;
+    border-radius: 5px;
+    padding: 10px;
+    display: table;
+    border-spacing: 10px;
+}
+
+p {
+    display: table-row;
+}
+
+label {
+    display: table-cell;
+   
+}
+
+input {
+    display: table-cell;
+}
+
+.modify_buttons > button {
+    display: block;
+    font-size: 10px;
+    width: 50px;
+    height: 20px;
+    margin: 5px;
+}
+
+ul {
+    padding: 0;
+    list-style: none;
+}
+
+li.edu_list, li.work_list {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    
+    padding: 10px;
+}
+
+.modify_buttons {
+    position: absolute;
+    top: 10%;
+    right: 0;
+}
+
+
