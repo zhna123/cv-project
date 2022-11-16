@@ -16,7 +16,8 @@ class WorkAdd extends Component {
             position: '',
             description: '',
             date_from: '',
-            date_until: ''
+            date_until: '',
+            error: false
         }
     }
 
@@ -29,9 +30,15 @@ class WorkAdd extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const workInput = this.state;
-        this.handleWorkAdd(workInput, event);
-        this.props.resetClick();
+        const {id, company_name, position, description, date_from, date_until} = this.state;
+        const workInput = {id, company_name, position, description, date_from, date_until};
+        if (company_name !== '' && position !== '' && description !== '' && date_from !== '' && date_until !== '') {
+            this.handleWorkAdd(workInput, event);
+            this.props.resetClick();
+        } else {
+            this.setState({ error: true})
+        }
+       
     }
 
     handleCancel(event) {
@@ -41,7 +48,7 @@ class WorkAdd extends Component {
      
     render() {
 
-        const { company_name, position, description, date_from, date_until } = this.setState;
+        const { company_name, position, description, date_from, date_until, error } = this.state;
 
         return (
             <div className="add_form">
@@ -74,8 +81,12 @@ class WorkAdd extends Component {
                     <input type='text' id='until' value={ date_until } 
                         onChange={this.handleWorkChange.bind(this, 'date_until')}></input>
                 </p>
-                <button onClick={ this.handleCancel }>CANCEL</button>
-                <button onClick={ this.handleSubmit }>DONE</button>
+                { error && <div className='error'>All fields are required.</div>}
+                
+                <p>
+                    <button onClick={ this.handleCancel }>CANCEL</button>
+                    <button onClick={ this.handleSubmit }>DONE</button>
+                </p>
             </div>
             
         );

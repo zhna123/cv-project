@@ -20,7 +20,7 @@ h1 {
     border: 2px solid gray;
 }
 
-.edu_group, .work_group {
+.edu_group, .work_group, .review_group {
     display: block;
     width: 80%;
 }
@@ -40,6 +40,8 @@ button {
     height: 35px;
     color: white;
     font: inherit;
+    font-size: .8rem;
+    padding: 5px;
 }
 
 .add_form {
@@ -93,6 +95,59 @@ li.edu_list, li.work_list {
     position: absolute;
     top: 10%;
     right: 0;
+}
+
+.error {
+    color: red;
+    font-size: .8rem;
+    font-style: italic;
+}
+
+/* *************** OVERVIEW styling **************** */
+
+.overview {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 5fr 1fr;
+    height: 100vh;
+}
+
+.ov_title {
+    grid-column: 1 / 3;
+    grid-row: 1 / 2;
+    background-color: rgba(119, 136, 153, 0.728);
+}
+
+.ov_general {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+.ov_edu {
+    grid-column: 1 / 2;
+    grid-row: 3 / 4;
+    border: 2px solid lightslategray;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.ov_work {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    border: 2px solid lightslategray;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.ov_footer {
+    grid-column: 1 / 3;
+    grid-row: 4 / 5;
 }
 
 

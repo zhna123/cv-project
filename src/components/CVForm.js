@@ -135,6 +135,7 @@ class CVForm extends Component {
             case 5:
                 return (
                     <Overview 
+                        prevStep = {this.prevStep}
                         values = {values}
                     />
                 );

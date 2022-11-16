@@ -5,6 +5,8 @@ class WorkEdit extends Component {
     constructor(props) {
         super(props);
         this.handleWorkChange = this.handleWorkChange.bind(this);
+        this.handleEdit = this.props.handleEdit;
+        this.editClick = this.editClick.bind(this);
         const { workInput } = this.props;
         this.state = {
             id: workInput.id,
@@ -12,7 +14,8 @@ class WorkEdit extends Component {
             position: workInput.position,
             description: workInput.description,
             date_from: workInput.date_from,
-            date_until: workInput.date_until
+            date_until: workInput.date_until,
+            error: false
         }
     }
 
@@ -22,12 +25,23 @@ class WorkEdit extends Component {
             [input]: event.target.value
         });
     }
+
+    editClick(workInput, e) {
+        e.preventDefault();
+        const {id, company_name, position, description, date_from, date_until} = workInput;
+        if (company_name !== '' && position !== '' && description !== '' && date_from !== '' && date_until !== '') {
+            this.handleEdit(id, workInput, e);
+        } else {
+            this.setState({ error: true});
+        }
+
+    }
      
     render() {
 
-        const {id, company_name, position, description, date_from, date_until} = this.state;
+        const {id, company_name, position, description, date_from, date_until, error} = this.state;
         const workInput = {id, company_name, position, description, date_from, date_until};
-        const { handleEdit, cancelEdit } = this.props;
+        const { cancelEdit } = this.props;
 
         return (
             <div className="add_form">
@@ -60,8 +74,10 @@ class WorkEdit extends Component {
                     <input type='text' id='until' value={ date_until } 
                         onChange={this.handleWorkChange.bind(this, 'date_until')}></input>
                 </p>
+                { error && <div className='error'>All fields are required.</div>}
+
                 <button onClick={ cancelEdit }>CANCEL</button>
-                <button onClick={ handleEdit.bind(this, id, workInput) }>DONE</button>
+                <button onClick={ this.editClick.bind(this, workInput) }>DONE</button>
                 
             </div>
             

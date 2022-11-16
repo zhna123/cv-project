@@ -12,10 +12,13 @@ class Education extends Component {
         this.nextStep = this.props.nextStep;
         this.continue = this.continue.bind(this);
         this.previous = this.previous.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.handleEditClick = this.handleEditClick.bind(this);
+        this.cancelEdit = this.cancelEdit.bind(this);
 
         this.handleClick = this.handleClick.bind(this);
         this.resetClick = this.resetClick.bind(this);
-        this.state = {isClicked: false};
+        this.state = {isClicked: false, isEdit: false, educationInput: {}};
     }
 
     continue(e) {
@@ -36,8 +39,31 @@ class Education extends Component {
         this.setState({isClicked: false});
     }
 
+    // edit related ******************
+    handleEditClick(id, value, event) {
+        event.preventDefault();
+        this.setState({ isEdit: true, educationInput: {
+            id: id,
+            school_name: value.school_name,
+            title_of_study: value.title_of_study,
+            graduation_date: value.graduation_date
+        } });
+    }
+
+    handleEdit(id, value, event) {
+        event.preventDefault();
+        this.props.editEducation(id, value, event);
+        this.setState({ isEdit: false})
+    }
+
+    cancelEdit(event) {
+        event.preventDefault();
+        this.setState({isEdit: false});
+    }
+
     render() {
-        const { values, addEducation, deleteEducation, editEducation } = this.props;
+        const { values, addEducation, deleteEducation } = this.props;
+        const { isClicked, isEdit, educationInput } = this.state;
 
         return (
             <form id="cv_form">
@@ -47,15 +73,20 @@ class Education extends Component {
                     <EducationControl 
                         educationList = { values.education }
                         handleEducationDelete = { deleteEducation }
-                        handleEducationEdit = { editEducation }
+
+                        educationInput = { educationInput }
+                        handleEditClick = { this.handleEditClick }
+                        handleEdit = {this.handleEdit }
+                        cancelEdit = {this.cancelEdit}
+                        isEdit = { isEdit }
                     />
                     {   
-                        this.state.isClicked ? 
+                        isClicked ? 
                             <EducationAdd 
                                 handleEducationAdd = { addEducation }
                                 resetClick = { this.resetClick }
                             /> 
-                            : <ButtonAdd onClick = {this.handleClick}/>
+                            : (isEdit ? <div /> : <ButtonAdd onClick = {this.handleClick}/>)
                     }
                 </fieldset>
                 <button onClick={ this.continue }>NEXT</button>

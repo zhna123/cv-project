@@ -15,6 +15,7 @@ class EducationAdd extends Component {
             school_name: '',
             title_of_study: '',
             graduation_date: '',
+            error: false
         }
     }
 
@@ -27,9 +28,15 @@ class EducationAdd extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const educationInput = this.state;
-        this.handleEducationAdd(educationInput, event);
-        this.props.resetClick();
+        const {id, school_name, title_of_study, graduation_date} = this.state;
+        const educationInput = {id, school_name, title_of_study, graduation_date};
+        if (school_name !== '' && title_of_study !== '' && graduation_date !== '' ) {
+            this.handleEducationAdd(educationInput, event);
+            this.props.resetClick();
+        } else {
+            this.setState({error: true})
+        }
+        
     }
 
     handleCancel(event) {
@@ -39,7 +46,7 @@ class EducationAdd extends Component {
      
     render() {
 
-        const { school_name, title_of_study, graduation_date } = this.state;
+        const { school_name, title_of_study, graduation_date, error } = this.state;
 
         return (
             <div className="add_form">
@@ -60,11 +67,11 @@ class EducationAdd extends Component {
                     <input type='text' id='date' value={ graduation_date } 
                         onChange={this.handleEducationChange.bind(this, 'graduation_date')}></input>
                 </p>
+                { error && <div className='error'>All fields are required.</div>}
                 <p>
                     <button onClick={ this.handleCancel }>CANCEL</button>
                     <button onClick={ this.handleSubmit }>DONE</button>
                 </p>
-                
             </div>
             
         );

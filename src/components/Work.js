@@ -13,9 +13,13 @@ class Work extends Component {
         this.continue = this.continue.bind(this);
         this.previous = this.previous.bind(this);
 
+        this.handleEditClick = this.handleEditClick.bind(this);
+        this.handleEdit = this.handleEdit.bind(this);
+        this.cancelEdit = this.cancelEdit.bind(this);
+
         this.handleClick = this.handleClick.bind(this);
         this.resetClick = this.resetClick.bind(this);
-        this.state = {isClicked: false};
+        this.state = {isClicked: false, isEdit: false, workInput: {}};
     }
 
     continue(e) {
@@ -36,8 +40,33 @@ class Work extends Component {
         this.setState({isClicked: false});
     }
 
+    // edit related ***********
+    handleEditClick(id, value, event) {
+        event.preventDefault();
+        this.setState({ isEdit: true, workInput: {
+            id: id,
+            company_name: value.company_name,
+            position: value.position,
+            description: value.description,
+            date_from: value.date_from,
+            date_until: value.date_until
+        } });
+    }
+
+    handleEdit(id, value, event) {
+        event.preventDefault();
+        this.props.editWork(id, value, event);
+        this.setState({ isEdit: false})
+    }
+
+    cancelEdit(event) {
+        event.preventDefault();
+        this.setState({isEdit: false});
+    }
+
     render() {
-        const { values, addWork, deleteWork, editWork } = this.props;
+        const { values, addWork, deleteWork } = this.props;
+        const {isClicked, isEdit, workInput} = this.state;
 
         return (
             <form id="cv_form">
@@ -46,14 +75,19 @@ class Work extends Component {
                     <legend>Work Experience</legend>
                     <WorkControl workList = { values.work }
                             handleWorkDelete = { deleteWork }
-                            handleWorkEdit = { editWork }/>
+
+                            workInput = { workInput }
+                            handleEditClick = { this.handleEditClick }
+                            handleEdit = {this.handleEdit }
+                            cancelEdit = {this.cancelEdit}
+                            isEdit = { isEdit } />
                     {   
-                        this.state.isClicked ? 
+                        isClicked ? 
                             <WorkAdd 
                                 handleWorkAdd = { addWork }
                                 resetClick = { this.resetClick }
                             /> 
-                            : <ButtonAdd onClick = {this.handleClick}/>
+                            : ( isEdit ? <div /> : <ButtonAdd onClick = {this.handleClick}/>)
                     }
                 </fieldset>
                 <button onClick={ this.continue }>NEXT</button>
