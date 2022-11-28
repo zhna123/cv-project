@@ -1,15 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import CVForm from "./components/CVForm";
 import "./App.css"
 
-class App extends Component {
-
-  render() {
-    return (
-      <div>
-        <CVForm />
-      </div>
-    );
-  }
+const App = () => {
+  return (
+    <div>
+      <CVForm />
+    </div>
+  )
 }
 export default App;

@@ -1,99 +1,84 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import "../styles/style.css"
 import ButtonAdd from "./ButtonAdd";
 import EducationAdd from "./EducationAdd";
 import EducationControl from "./EducationControl";
 
-class Education extends Component {
+const Education = ({prevStep, nextStep, addEducation, deleteEducation, editEducation, values}) => {
 
-    constructor(props) {
-        super(props);
-        this.prevStep = this.props.prevStep;
-        this.nextStep = this.props.nextStep;
-        this.continue = this.continue.bind(this);
-        this.previous = this.previous.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
-        this.handleEditClick = this.handleEditClick.bind(this);
-        this.cancelEdit = this.cancelEdit.bind(this);
+    const [clicked, setClicked] = useState(false)
+    const [edit, setEdit] = useState(false)
+    const [educationInput, setEducationInput] = useState({})
 
-        this.handleClick = this.handleClick.bind(this);
-        this.resetClick = this.resetClick.bind(this);
-        this.state = {isClicked: false, isEdit: false, educationInput: {}};
-    }
-
-    continue(e) {
+    const next = (e) => {
         e.preventDefault();
-        this.nextStep();
+        nextStep();
     }
 
-    previous(e) {
+    const previous = (e) => {
         e.preventDefault();
-        this.prevStep();
+        prevStep();
     }
 
-    handleClick(e) {
-        this.setState({isClicked: true});
+    const handleClick = (e) => {
+        setClicked(true);
     }
 
-    resetClick(e) {
-        this.setState({isClicked: false});
+    const resetClick = (e) => {
+        setClicked(false);
     }
 
     // edit related ******************
-    handleEditClick(id, value, event) {
+    const handleEditClick = (id, value, event) => {
         event.preventDefault();
-        this.setState({ isEdit: true, educationInput: {
+        setEdit(true);
+        setEducationInput({
             id: id,
             school_name: value.school_name,
             title_of_study: value.title_of_study,
             graduation_date: value.graduation_date
-        } });
+        })
     }
 
-    handleEdit(id, value, event) {
+    const handleEdit = (id, value, event) => {
         event.preventDefault();
-        this.props.editEducation(id, value, event);
-        this.setState({ isEdit: false})
+        editEducation(id, value, event);
+        setEdit(false);
     }
 
-    cancelEdit(event) {
+    const cancelEdit = (event) => {
         event.preventDefault();
-        this.setState({isEdit: false});
+        setEdit(false);
     }
 
-    render() {
-        const { values, addEducation, deleteEducation } = this.props;
-        const { isClicked, isEdit, educationInput } = this.state;
+    return (
+        <form id="cv_form">
+            <h1>CV APP</h1>
+            <fieldset className="group edu_group">
+                <legend>Education Experience</legend>
+                <EducationControl 
+                    educationList = { values.education }
+                    handleEducationDelete = { deleteEducation }
 
-        return (
-            <form id="cv_form">
-                <h1>CV APP</h1>
-                <fieldset className="group edu_group">
-                    <legend>Education Experience</legend>
-                    <EducationControl 
-                        educationList = { values.education }
-                        handleEducationDelete = { deleteEducation }
-
-                        educationInput = { educationInput }
-                        handleEditClick = { this.handleEditClick }
-                        handleEdit = {this.handleEdit }
-                        cancelEdit = {this.cancelEdit}
-                        isEdit = { isEdit }
-                    />
-                    {   
-                        isClicked ? 
-                            <EducationAdd 
-                                handleEducationAdd = { addEducation }
-                                resetClick = { this.resetClick }
-                            /> 
-                            : (isEdit ? <div /> : <ButtonAdd onClick = {this.handleClick}/>)
-                    }
-                </fieldset>
-                <button onClick={ this.continue }>NEXT</button>
-                <button onClick={ this.previous }>PREVIOUS</button>
-            </form>
-        );
-    }
+                    educationInput = { educationInput }
+                    handleEditClick = { handleEditClick }
+                    handleEdit = {handleEdit }
+                    cancelEdit = {cancelEdit}
+                    isEdit = { edit }
+                />
+                {   
+                    clicked ? 
+                        <EducationAdd 
+                            handleEducationAdd = { addEducation }
+                            resetClick = { resetClick }
+                        /> 
+                        : (edit ? <div /> : <ButtonAdd onClick = {handleClick}/>)
+                }
+            </fieldset>
+            <button onClick={ next }>NEXT</button>
+            <button onClick={ previous }>PREVIOUS</button>
+        </form>
+    );
 }
 
 export default Education;

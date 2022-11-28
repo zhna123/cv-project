@@ -1,88 +1,66 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 
-class WorkEdit extends Component {
+const WorkEdit = ({workInput, handleEdit, cancelEdit}) => {
 
-    constructor(props) {
-        super(props);
-        this.handleWorkChange = this.handleWorkChange.bind(this);
-        this.handleEdit = this.props.handleEdit;
-        this.editClick = this.editClick.bind(this);
-        const { workInput } = this.props;
-        this.state = {
-            id: workInput.id,
-            company_name: workInput.company_name,
-            position: workInput.position,
-            description: workInput.description,
-            date_from: workInput.date_from,
-            date_until: workInput.date_until,
-            error: false
-        }
+    const [work, setWork] = useState(workInput)
+    const [error, setError] = useState(false);
+
+    const handleWorkChange = (input, event) => {
+        setWork({...work, [input]: event.target.value})
     }
 
-    handleWorkChange(input, event) {
-        this.setState({id: this.state.id});
-        this.setState({
-            [input]: event.target.value
-        });
-    }
-
-    editClick(workInput, e) {
+    const editClick = (e) => {
         e.preventDefault();
-        const {id, company_name, position, description, date_from, date_until} = workInput;
+        const {id, company_name, position, description, date_from, date_until} = work;
         if (company_name !== '' && position !== '' && description !== '' && date_from !== '' && date_until !== '') {
-            this.handleEdit(id, workInput, e);
+            handleEdit(id, work, e);
         } else {
-            this.setState({ error: true});
+            setError(true);
         }
 
     }
      
-    render() {
-
-        const {id, company_name, position, description, date_from, date_until, error} = this.state;
-        const workInput = {id, company_name, position, description, date_from, date_until};
-        const { cancelEdit } = this.props;
-
-        return (
-            <div className="add_form">
-                <p>
-                    <label htmlFor='company'>COMPANY</label>
-                    <input type='text' id='company' value={ company_name } 
-                        onChange={ this.handleWorkChange.bind(this, 'company_name') }></input>
-                </p>
-               
-               <p>
-                    <label htmlFor='position'>POSITION</label>
-                    <input type='text' id='position' value={ position } 
-                        onChange={ this.handleWorkChange.bind(this, 'position')}></input>
-               </p>
-                
-                <p>
-                    <label htmlFor='desc'>DESCRIPTION</label>
-                    <input type='text' id='desc' value={ description } 
-                        onChange={this.handleWorkChange.bind(this, 'description')}></input>
-                </p>
-
-                <p>
-                    <label htmlFor='from'>START DATE</label>
-                    <input type='text' id='from' value={ date_from } 
-                        onChange={this.handleWorkChange.bind(this, 'date_from')}></input>
-                </p>
-
-                <p>
-                    <label htmlFor='until'>END DATE</label>
-                    <input type='text' id='until' value={ date_until } 
-                        onChange={this.handleWorkChange.bind(this, 'date_until')}></input>
-                </p>
-                { error && <div className='error'>All fields are required.</div>}
-
-                <button onClick={ cancelEdit }>CANCEL</button>
-                <button onClick={ this.editClick.bind(this, workInput) }>DONE</button>
-                
-            </div>
+    
+    return (
+        <div className="add_form">
+            <p>
+                <label htmlFor='company'>COMPANY</label>
+                <input type='text' id='company' value={ work.company_name } 
+                    onChange={ handleWorkChange.bind(null, 'company_name') }></input>
+            </p>
             
-        );
-    }
+            <p>
+                <label htmlFor='position'>POSITION</label>
+                <input type='text' id='position' value={ work.position } 
+                    onChange={ handleWorkChange.bind(null, 'position')}></input>
+            </p>
+            
+            <p>
+                <label htmlFor='desc'>DESCRIPTION</label>
+                <input type='text' id='desc' value={ work.description } 
+                    onChange={handleWorkChange.bind(null, 'description')}></input>
+            </p>
+
+            <p>
+                <label htmlFor='from'>START DATE</label>
+                <input type='text' id='from' value={ work.date_from } 
+                    onChange={handleWorkChange.bind(null, 'date_from')}></input>
+            </p>
+
+            <p>
+                <label htmlFor='until'>END DATE</label>
+                <input type='text' id='until' value={ work.date_until } 
+                    onChange={handleWorkChange.bind(null, 'date_until')}></input>
+            </p>
+            { error && <div className='error'>All fields are required.</div>}
+
+            <button onClick={ cancelEdit }>CANCEL</button>
+            <button onClick={ editClick }>DONE</button>
+            
+        </div>
+        
+    );
+    
 }
 
 export default WorkEdit;

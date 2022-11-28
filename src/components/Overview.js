@@ -1,52 +1,41 @@
-import React, { Component } from "react";
+import React from "react";
 
-class Overview extends Component {
+const Overview = ({prevStep, values}) => {
 
-    constructor(props) {
-        super(props);
-        this.prevStep = this.props.prevStep;
-        this.previous = this.previous.bind(this);
-        this.createNew = this.createNew.bind(this);
-    }
-
-    previous(e) {
+    const previous = (e) => {
         e.preventDefault();
-        this.prevStep();
+        prevStep();
     }
 
-    createNew(e) {
+    const createNew = (e) => {
         e.preventDefault();
         window.location.reload();
     }
-
-    render() {
-        const { values } = this.props;
-        const {username, email, phone, education, work} = values;
-
-        let emptyEduDiv;
-        let emptyWorkDiv;
-        if (education.length === 0) {
-            emptyEduDiv = <div>No Education Experience Entered.</div>
-        }
-        if (work.length === 0) {
-            emptyWorkDiv = <div>No Work Experience Entered.</div>
-        }
+    
+    let emptyEduDiv;
+    let emptyWorkDiv;
+    if (values.education.length === 0) {
+        emptyEduDiv = <div>No Education Experience Entered.</div>
+    }
+    if (values.work.length === 0) {
+        emptyWorkDiv = <div>No Work Experience Entered.</div>
+    }
 
         return (
             <div className="overview">
                 <div className="ov_title">
-                    <h1> {username}'s CV </h1>
+                    <h1> {values.username}'s CV </h1>
                 </div>
                 <div className="ov_general">
-                    <div>NAME: { username }</div>
-                    <div>EMAIL: { email }</div>
-                    <div>PHONE: { phone }</div>
+                    <div>NAME: { values.username }</div>
+                    <div>EMAIL: { values.email }</div>
+                    <div>PHONE: { values.phone }</div>
                 </div>
                 <div className="ov_edu">
                     { emptyEduDiv }
                     <ul>
                         {
-                            education.map(item => {
+                            values.education.map(item => {
                                 return (
                                     <li key={ item.id } className="edu_list">
                                         <ul>
@@ -64,7 +53,7 @@ class Overview extends Component {
                     { emptyWorkDiv }
                     <ul>
                         {
-                            work.map(item => {
+                            values.work.map(item => {
                                 return (
                                     <li key={ item.id } className="work_list">
                                         <ul>
@@ -81,12 +70,12 @@ class Overview extends Component {
                     </ul>
                 </div>
                 <div className="ov_footer">
-                    <button onClick={ this.previous }>BACK TO EDIT</button>
-                    <button onClick={ this.createNew }>CREATE NEW</button>
+                    <button onClick={ previous }>BACK TO EDIT</button>
+                    <button onClick={ createNew }>CREATE NEW</button>
                 </div>
             </div>
         );
-    }
+    
 }
 
 export default Overview;

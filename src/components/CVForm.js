@@ -1,147 +1,110 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import General from "./General";
 import Education from "./Education";
 import Work from "./Work";
 import Review from "./Review";
 import Overview from "./Overview";
 
-class CVForm extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            step: 1,
+const CVForm = () => {
+    const [userInfo, setUserInfo] = useState({
             username: '',
             email: '',
             phone: '',
             education: [],
             work: [],
-        }
+    });
+    const [step, setStep] = useState(1);
 
-        this.handleChange = this.handleChange.bind(this);
-        this.addEducation = this.addEducation.bind(this);
-        this.deleteEducation = this.deleteEducation.bind(this);
-        this.editEducation = this.editEducation.bind(this);
+    const handleChange = (input, e) => {
+        setUserInfo({...userInfo, [input]: e.target.value})
+    }
 
-        this.addWork = this.addWork.bind(this);
-        this.deleteWork = this.deleteWork.bind(this);
-        this.editWork = this.editWork.bind(this);
+    const prevStep = () => {
+        setStep(step - 1);
+    }
 
-        this.prevStep = this.prevStep.bind(this);
-        this.nextStep = this.nextStep.bind(this);
+    const nextStep = () => {
+        setStep(step + 1);
     }
 
     // =================== education
-    addEducation(educationInput, event) {
-        this.setState({
-            education: this.state.education.concat(educationInput)
-        });
+    const addEducation = (educationInput, event) => {
+        setUserInfo({...userInfo, education: userInfo.education.concat(educationInput)})
     }
 
-    deleteEducation(id, event) {
-        this.setState({
-            education: this.state.education.filter( edu => edu.id !== id )
-        });
+    const deleteEducation = (id, event) => {
+        setUserInfo({...userInfo, education: userInfo.education.filter(edu => edu.id !== id)})
     }
 
-    editEducation(id, value, event) {
-        this.setState({
-            education: this.state.education.map( item => {
-                return item.id === id ? value : item
-            })
-        });
-    }
-    // ======================== work
-    addWork(workInput, event) {
-        this.setState({
-            work: this.state.work.concat(workInput)
-        });
+    const editEducation = (id, value, event) => {
+        setUserInfo({...userInfo, education: userInfo.education.map( item => {
+            return item.id === id ? value : item
+        })})
     }
 
-    deleteWork(id, event) {
-        this.setState({
-            work: this.state.work.filter( work => work.id !== id )
-        });
+     // ======================== work
+     const addWork = (workInput, event) => {
+        setUserInfo({...userInfo, work: userInfo.work.concat(workInput)})
     }
 
-    editWork(id, value, event) {
-        this.setState({
-            work: this.state.work.map( item => {
-                return item.id === id ? value : item
-            })
-        });
+    const deleteWork = (id, event) => {
+        setUserInfo({...userInfo, work: userInfo.work.filter( work => work.id !== id )})
     }
 
-    handleChange(input, event) {
-        this.setState({
-            [input]: event.target.value,
-        });
+    const editWork = (id, value, event) => {
+        setUserInfo({...userInfo, work: userInfo.work.map( item => {
+            return item.id === id ? value : item
+        })})
     }
 
-    prevStep() {
-        const {step} = this.state;
-        this.setState({step: step - 1});
-    }
-
-    nextStep() {
-        const {step} = this.state;
-        this.setState({step: step + 1});
-    }
-
-    render() {
-        const {step} = this.state;
-        const {username, email, phone, education, work} = this.state;
-        const values = {username, email, phone, education, work};
-
-        switch(step) {
-            case 1:
-                return (
-                    <General 
-                        nextStep = {this.nextStep}
-                        handleChange = {this.handleChange}
-                        values = {values}
-                    />
-                );
-            case 2: 
-                return (
-                    <Education 
-                        prevStep = {this.prevStep}
-                        nextStep = {this.nextStep}
-                        addEducation = {this.addEducation}
-                        deleteEducation = {this.deleteEducation}
-                        editEducation = {this.editEducation}
-                        values = {values}
-                    />
-                );
-            case 3:
-                return (
-                    <Work 
-                        prevStep = {this.prevStep}
-                        nextStep = {this.nextStep}
-                        addWork = {this.addWork}
-                        deleteWork = {this.deleteWork}
-                        editWork = {this.editWork}
-                        values = {values}
-                    />
-                );
-            case 4:
-                return (
-                    <Review 
-                        prevStep = {this.prevStep}
-                        nextStep = {this.nextStep}
-                        values = {values}
-                    />
-                );
-            case 5:
-                return (
-                    <Overview 
-                        prevStep = {this.prevStep}
-                        values = {values}
-                    />
-                );
-            default:
-                // do nothing
-        }
+    switch(step) {
+        case 1:
+            return (
+                <General 
+                    nextStep = {nextStep}
+                    handleChange = {handleChange}
+                    values = {userInfo}
+                />
+            );
+        case 2: 
+            return (
+                <Education 
+                    prevStep = {prevStep}
+                    nextStep = {nextStep}
+                    addEducation = {addEducation}
+                    deleteEducation = {deleteEducation}
+                    editEducation = {editEducation}
+                    values = {userInfo}
+                />
+            );
+        case 3:
+            return (
+                <Work 
+                    prevStep = {prevStep}
+                    nextStep = {nextStep}
+                    addWork = {addWork}
+                    deleteWork = {deleteWork}
+                    editWork = {editWork}
+                    values = {userInfo}
+                />
+            );
+        case 4:
+            return (
+                <Review 
+                    prevStep = {prevStep}
+                    nextStep = {nextStep}
+                    values = {userInfo}
+                />
+            );
+        case 5:
+            return (
+                <Overview 
+                    prevStep = {prevStep}
+                    values = {userInfo}
+                />
+            );
+        default:
+            // do nothing
     }
 }
 

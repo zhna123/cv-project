@@ -1,39 +1,29 @@
-import React, { Component } from "react";
+import React from "react";
 import WorkList from "./WorkList";
 import WorkEdit from "./WorkEdit";
 
 
-class WorkControl extends Component {
+const WorkControl = ({handleWorkDelete, workList, isEdit, workInput, handleEditClick, handleEdit, cancelEdit}) => {
 
-    constructor(props) {
-        super(props);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleWorkDelete = this.props.handleWorkDelete;
-    }
-
-    handleDelete(id, event) {
+    const handleDelete = (id, event) => {
         event.preventDefault();
-        this.handleWorkDelete(id, event)
+        handleWorkDelete(id, event)
     }
     
-    render() {
-
-        const { workList, isEdit, workInput, handleEditClick, handleEdit, cancelEdit } = this.props;
-
-        return (
-            <div>
-                {
-                    isEdit ? <WorkEdit workInput = { workInput } 
-                                        handleEdit = { handleEdit }
-                                        cancelEdit = { cancelEdit }/> : 
-                    <WorkList workList = { workList } 
-                                handleDelete = { this.handleDelete } 
-                                handleEdit = { handleEditClick }/>
-                }
-                
-            </div>
-        );
-    }
+    return (
+        <div>
+            {
+                isEdit ? <WorkEdit workInput = { workInput } 
+                                    handleEdit = { handleEdit }
+                                    cancelEdit = { cancelEdit }/> : 
+                <WorkList workList = { workList } 
+                            handleDelete = { handleDelete } 
+                            handleEdit = { handleEditClick }/>
+            }
+            
+        </div>
+    );
+    
 }
 
 export default WorkControl;

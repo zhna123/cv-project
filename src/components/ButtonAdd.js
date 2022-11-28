@@ -1,19 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 
-class ButtonAdd extends Component {
+const ButtonAdd = ({onClick}) => {
 
-    constructor(props) {
-        super(props);
-    }
+    return (
+        <button className="add" onClick={ onClick }>ADD</button>
+    );
 
-    render() {
-         
-        const { onClick } = this.props;
-
-        return (
-            <button className="add" onClick={ onClick }>ADD</button>
-        );
-    }
 }
 
 export default ButtonAdd;
