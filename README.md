@@ -1,6 +1,6 @@
 # CV App
 
-This is a react project to practice using props and state in class components. After opening the webpage, users can enter their personal information, education, and work experience to generate a simple CV. 
+This is a react project to practice using props and state in class components(also implemented with functional components in a separate branch). After opening the webpage, users can enter their personal information, education, and work experience to generate a simple CV. 
 
 
 [DEMO](https://zhna123.github.io/cv-project/)
